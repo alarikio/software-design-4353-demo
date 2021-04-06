@@ -18,6 +18,7 @@ mongoose.connect(URI, {useNewUrlParser: true});
 
 const path = require("path");
 const http = require('http');
+const user = require("./models/user");
 var app = express();
 const server = http.createServer(app);
 app.use(express.static(path.join(__dirname,'./Frontend')));
@@ -90,6 +91,9 @@ app.get('/fuelhistory' , function(req,res){
 res.sendFile(path.join(__dirname,'./Frontend/fuelhistory.html'))
 });
 
+app.get('/clientProfileMgt' , function(req,res){
+    res.sendFile(path.join(__dirname,'./Frontend/actmngr.html'))
+});
 app.post("/clientProfileMgt", function (req, res){
     
     var userfullAddress = req.body.address.concat(", ", req.body.City, ", ",req.body.State, ", ",req.body.zip);
@@ -107,8 +111,8 @@ app.post("/clientProfileMgt", function (req, res){
     
 
     new userInfo(profiledata).save()
+    console.log(userfullAddress)
 
-   
     res.sendFile(path.join(__dirname,'./Frontend/mainpg.html'));
    
 

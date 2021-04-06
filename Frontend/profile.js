@@ -1,13 +1,4 @@
-
-var form1 = document.getElementById('submitButton');
-
-function myFunction3() {
-    if (form1.checkValidity()) {
-      alert("Profile Saved!");
-    }
-
-  }
-
+var form1 = document.getElementById('testbtn');
   
 $('.login').on('keyup change', function() {
     var empty = false;
@@ -23,9 +14,8 @@ $('.login').on('keyup change', function() {
     });
 
     if (empty) {
-        $('#submitButton').prop('disabled', true);
+        $('#testbtn').prop('disabled', true);
     } else {
-        $('#submitButton').prop('disabled', false);
+        $('#testbtn').prop('disabled', false);
     }
 });
-

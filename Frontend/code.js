@@ -39,13 +39,16 @@ function getAddress() {
     }
     
   }
+  function multiplyBy()
+  {
+          num1 = document.getElementById("SP").value;
+          num2 = document.getElementById("GR").value;
+          var result = document.getElementById('TAD'); 
+          var myResult = num1 * num2;
+          document.getElementById('TAD').value = myResult;
+  }
 
-
-  $("#SP,#GR").keyup(function() {
-
-    $('#TAD').val($('#GR').val() * $('#SP').val());
-
-  });
+ 
 
 $(function() {
     $('form > input[required]').on('input', function() {

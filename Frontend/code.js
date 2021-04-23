@@ -39,15 +39,27 @@ function getAddress() {
     }
     
   }
-  function multiplyBy()
-  {
-          num1 = document.getElementById("SP").value;
-          num2 = document.getElementById("GR").value;
-          var result = document.getElementById('TAD'); 
-          var myResult = num1 * num2;
-          document.getElementById('TAD').value = myResult;
-  }
 
+
+  function multiplyBy(){
+    galreq = document.getElementById("GR").value;
+  
+    var galreqfactor
+
+    if (galreq > 1000) {
+      galreqfactor = .02
+    }
+    else {
+      galreqfactor = .03
+    }
+
+    margin = 1.50 * (.02 - .01 + galreqfactor + .1)
+    var suggestedprice = 1.5 + margin
+    document.getElementById("SP").value = suggestedprice
+    var total = galreq * suggestedprice
+    document.getElementById('TAD').value = total;
+
+}
  
 
 $(function() {

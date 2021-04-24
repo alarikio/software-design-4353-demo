@@ -56,7 +56,7 @@ app.post("/register", function (req, res) {
             password, function (err, user) {
         if (err) {
             console.log(err);
-            res.sendFile(path.join(__dirname,'./Frontend/INVR.html'));
+            return res.sendFile(path.join(__dirname,'./Frontend/INVR.html'));
         }
   
         passport.authenticate("local")(

@@ -218,8 +218,12 @@ body {
         margin-left: 150px;
         font-size: 13px;
         display: inline;
+        margin-bottom: 10px;
+      }
+      
+      
 
-   }
+   
    .submit1:active{
      border: hidden;
      cursor: pointer;

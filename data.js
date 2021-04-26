@@ -22,7 +22,7 @@ const user = require("./models/user");
 var app = express();
 const server = http.createServer(app);
 app.use(express.static(path.join(__dirname,'./Frontend')));
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
   
   

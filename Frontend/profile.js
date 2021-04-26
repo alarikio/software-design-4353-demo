@@ -1,4 +1,4 @@
-var form1 = document.getElementById('testbtn');
+var form1 = document.getElementById('actbutton');
   
 $('.login').on('keyup change', function() {
     var empty = false;
@@ -14,8 +14,8 @@ $('.login').on('keyup change', function() {
     });
 
     if (empty) {
-        $('#testbtn').prop('disabled', true);
+        $('#actbutton').prop('disabled', true);
     } else {
-        $('#testbtn').prop('disabled', false);
+        $('#actbutton').prop('disabled', false);
     }
 });

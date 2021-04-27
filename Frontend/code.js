@@ -1,18 +1,4 @@
 
-function getAddress() {
-  try {
-
-    alert('hi');
-  }
-
-   catch (err) {
-    console.log(err);
-  }
-
-
-
-
-}
 //Alert box displaying a user successfully submitted a form
   var form = document.getElementById('submitButton');
 

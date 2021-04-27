@@ -153,6 +153,13 @@ app.get('/getAddress', async(req, res) => {
     }
     res.send(address_data)
 })
+
+app.get('/getProfile', async(req, res) => {
+    const profile_data = profileInfo
+    res.send(profile_data)
+    console.log(profile_data)
+})
+
   
   
 var port = process.env.PORT || 3000;

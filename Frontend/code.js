@@ -40,11 +40,18 @@ function getAddress() {
     
   }
 
-
-  function multiplyBy(){
+function pricing(){
     galreq = document.getElementById("GR").value;
-  
+    address = document.getElementById("DA").value;
     var galreqfactor
+    var locfactor
+    var n = address.includes("TX")
+    if (n) {
+      locfactor = .02
+    }
+    else {
+      locfactor = .04
+    }
 
     if (galreq > 1000) {
       galreqfactor = .02
@@ -53,11 +60,12 @@ function getAddress() {
       galreqfactor = .03
     }
 
-    margin = 1.50 * (.02 - .01 + galreqfactor + .1)
+    margin = 1.50 * (locfactor - .01 + galreqfactor + .1)
     var suggestedprice = 1.5 + margin
     document.getElementById("SP").value = suggestedprice
     var total = galreq * suggestedprice
     document.getElementById('TAD').value = total;
+    
 
 }
  

@@ -143,6 +143,13 @@ app.post("/FuelQuote", function (req, res){
     res.sendFile(path.join(__dirname,'./Frontend/mainpg.html'));
 
 });
+
+app.get('/getAddress', async(req, res) => {
+    const address_data = {
+        address: userfullAddress
+    }
+    res.send(address_data)
+})
   
   
 var port = process.env.PORT || 3000;

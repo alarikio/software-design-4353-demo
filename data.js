@@ -96,13 +96,13 @@ app.get('/clientProfileMgt' , function(req,res){
 });
 
 var userfullAddress
+var profileInfo
 
 app.post("/clientProfileMgt", function (req, res){
     
     userfullAddress = req.body.address.concat(", ", req.body.City, ", ",req.body.State, ", ",req.body.zip);
 
     var profiledata = {
-
         FullName :req.body.fullname,
         Address1 : req.body.address,
         Address2: req.body.address1,
@@ -112,6 +112,15 @@ app.post("/clientProfileMgt", function (req, res){
         fullAddress : userfullAddress
     }
     
+    profileInfo = {
+        FullName :req.body.fullname,
+        Address1 : req.body.address,
+        Address2: req.body.address1,
+        City : req.body.City,
+        State : req.body.State,
+        Zipcode : req.body.zip,
+        fullAddress : userfullAddress
+    }
 
     new userInfo(profiledata).save()
     

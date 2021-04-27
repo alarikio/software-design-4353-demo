@@ -130,6 +130,37 @@
 
     </form>
   </div>
+  <script>
+
+    window.onload=my_code();
+
+    async function my_code(){
+      
+      const response = await fetch("http://localhost:3000/getProfile", {
+          method: "GET",
+          headers: {'Content-Type': 'application/json'}
+      });
+      profileData = await response.json();
+      
+      fname = document.getElementById('fullName');
+      addr = document.getElementById('address');
+      addr2 = document.getElementById('address1');
+      city = document.getElementById('City');
+      state = document.getElementById('State');
+      zipcode = document.getElementById('zip');
+
+      if(profileData['FullName'] != null) {
+        fname.value = profileData['FullName']
+        addr.value = profileData['Address1']
+        addr2.value = profileData['Address2']
+        city.value = profileData['City']
+        state.value = profileData['State']
+        zipcode.value = profileData['Zipcode']
+      }
+    }
+
+    
+  </script>
   <script   src="https://code.jquery.com/jquery-3.5.1.js"   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="   crossorigin="anonymous"></script>
   <script src="profile.js"></script>
  

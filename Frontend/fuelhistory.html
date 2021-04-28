@@ -1,83 +1,190 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="1260">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fuel Quote History</title>
-  <link rel="stylesheet" href="css/stlz.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Imbue&family=Dancing+Script&family=Acme&family=Kurale&family=Open+Sans&family=Raleway&family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item">
-              <a class="nav-link" href="http://localhost:3000/home">Home</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="http://localhost:3000/FQF">Fuel Quote Form</a>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link" href="http://localhost:3000/fuelhistory">Fuel Quote History</a>
-            </li>
-
-          </ul>
+var express = require("express"),
+mongoose = require("mongoose"),
+passport = require("passport"),
+bodyParser = require("body-parser"),
+LocalStrategy = require("passport-local"),
+passportLocalMongoose = require("passport-local-mongoose"),
+fuelquoteform = require('./models/fuelquoteform');
+User = require("./models/user");
+userInfo = require("./models/userInfo");
 
 
-          <button type="button" onclick = "location.href='actmngr.html'" class="btn btn-default">
-            <i class="fa fa-user" aria-hidden="true"></i> Profile
-          </button>
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
+URI = "mongodb+srv://dbT:testing123@cosc4353db.wflq0.mongodb.net/test?retryWrites=true&w=majority";
+mongoose.connect(URI, {useNewUrlParser: true});
+
+const path = require("path");
+const http = require('http');
+const user = require("./models/user");
+var app = express();
+const server = http.createServer(app);
+app.use(express.static(path.join(__dirname,'./Frontend')));
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
+  
+  
+app.use(passport.initialize());
+app.use(passport.session());
+  
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+  
+
+  
+// Showing home page
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname,'./Frontend/login.html'));
+});
+  
 
 
-          <button type="button" onclick = "location.href='login.html'" class="btn btn-default">
-            <i class="fa fa-sign-out" aria-hidden="true"></i> Log out
-          </button>
+  
+// Showing register form
+app.get("/register", function (req, res) {
+    res.sendFile(path.join(__dirname,'./Frontend/register.html'));
+});
+  
+var userID
+
+// Handling user signup
+app.post("/register", function (req, res) {
+    userID = req.body.username
+    var username = req.body.username
+    var password = req.body.password
+    User.register(new User({ username: username }),
+            password, function (err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendFile(path.join(__dirname,'./Frontend/INVR.html'));
+        }
+  
+        passport.authenticate("local")(
+            req, res, function () {
+            res.sendFile(path.join(__dirname,'./Frontend/login.html'));;
+        });
+    });
+});
+  
+//Showing login form
+app.get("/login", function (req, res) {
+    res.sendFile(path.join(__dirname,'./Frontend/login.html'));
+});
+app.get("/home", function (req, res){
+    res.sendFile(path.join(__dirname,'./Frontend/mainpg.html'));
+});
+
+app.get("/invalidlog", function (req, res){
+    res.sendFile(path.join(__dirname,'./Frontend/invalid.html'));
+});
+
+//Handling user login
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: '/invalidlog'
+}), function (req, res) {
+});
+
+app.get('/fuelhistory' , function(req,res){
+res.sendFile(path.join(__dirname,'./Frontend/fuelhistory.html'))
+});
+
+app.get('/clientProfileMgt' , function(req,res){
+    res.sendFile(path.join(__dirname,'./Frontend/actmngr.html'))
+});
+
+var userfullAddress
+var profileInfo
+
+app.post("/clientProfileMgt", function (req, res){
+    
+    userfullAddress = req.body.address.concat(", ", req.body.City, ", ",req.body.State, ", ",req.body.zip);
+
+    var profiledata = {
+        FullName :req.body.fullname,
+        Address1 : req.body.address,
+        Address2: req.body.address1,
+        City : req.body.City,
+        State : req.body.State,
+        Zipcode : req.body.zip,
+        fullAddress : userfullAddress
+    }
+    
+    profileInfo = {
+        FullName :req.body.fullname,
+        Address1 : req.body.address,
+        Address2: req.body.address1,
+        City : req.body.City,
+        State : req.body.State,
+        Zipcode : req.body.zip,
+        fullAddress : userfullAddress
+    }
+
+    new userInfo(profiledata).save()
+    
+
+    res.sendFile(path.join(__dirname,'./Frontend/mainpg.html'));
+   
+
+});
+
+app.get('/FQF',function (req, res){
+    
+    res.sendFile(path.join(__dirname,'./Frontend/FQF.html'));
+});
+
+var quoteData
+
+app.post("/FuelQuote", function (req, res){
+    
+    quoteData = {    
+        gallonsRequested: req.body.input1,
+        deliveryAddress: req.body.DA,
+        deliveryDate:req.body.datechk,
+        pricePerGallon: req.body.SP,
+        totalAmt: req.body.TAD
+       
+    }
+
+    var QuoteInfo = {
+    gallonsRequested: req.body.input1,
+    deliveryAddress: req.body.DA,
+    deliveryDate:req.body.datechk,
+    pricePerGallon: req.body.SP,
+    totalAmt: req.body.TAD
+   
+    }
+
+    new fuelquoteform(QuoteInfo).save()
 
 
-        </div>
+    res.sendFile(path.join(__dirname,'./Frontend/mainpg.html'));
 
-    </nav>
+});
 
+app.get('/getAddress', async(req, res) => {
+    const address_data = {
+        address: userfullAddress
+    }
+    res.send(address_data)
+})
 
-    <div class="main3 container">
-        <h2 class="sign">Fuel Quote History</h2>
-        <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Quote Date</th>
-                <th>Gallons Requested</th>
-                <th>Delivery Address</th>
-                <th>Delivery Date</th>
-                <th>Suggested Amount</th>
-                <th>Total Amount Due</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <td>_____________</td>
-            <td>_____________</td>
-            <td>_____________</td>
-            <td>_____________</td>
-            <td>_____________</td>
-            <td>_____________</td>
-            </tr>
+app.get('/getProfile', async(req, res) => {
+    const profile_data = profileInfo
+    res.send(profile_data)
+})
 
-        </tbody>
-
-        </table>
-    </div>
+app.get('/getQuote', async(req,res) => {
+    const quote_data = quoteData
+    res.send(quote_data)
+    
+})
 
 
-
-</body>
-</html>
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+    console.log("Server Has Started at port 3000!");
+});

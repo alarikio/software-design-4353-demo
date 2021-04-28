@@ -10,4 +10,4 @@ node data.js
 
 
 To run code coverage report -
-npm test
+npm test and ctrl+c

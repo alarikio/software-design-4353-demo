@@ -60,7 +60,7 @@ $(function() {
     $('form > input[required]').on('input', function() {
 
         var empty = false;
-        var gallons = $("#GR");
+
 
         $('form > input[required]').each(function() {
             if ($(this).val() == '' || $(this).val() <= 0) {

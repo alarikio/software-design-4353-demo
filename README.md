@@ -2,6 +2,9 @@
 
 npm init
 
-npm install express mongoose body-parser express-session passport passport-local passport-local-mongoose mongodb
+npm install express mongoose body-parser express-session passport passport-local passport-local-mongoose mongodb mocha
+
+npm install --save-dev nyc
+
 
 node data.js

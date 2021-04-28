@@ -70,11 +70,11 @@ $(function() {
         });
 
         if (empty) {
-            
+            $('#registerButton').attr('disabled', 'disabled');
             $('#getQB').attr('disabled', 'disabled');
 
         } else {
-            
+          $('#registerButton').removeAttr('disabled');
             $('#getQB').removeAttr('disabled');
         }
     });

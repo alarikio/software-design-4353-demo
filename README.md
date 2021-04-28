@@ -6,5 +6,8 @@ npm install express mongoose body-parser express-session passport passport-local
 
 npm install --save-dev nyc
 
-
 node data.js
+
+
+To run code coverage report -
+npm test

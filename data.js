@@ -13,7 +13,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-URI = "mongodb+srv://SamJA:5CIX4WiXzAOx2ZCu@cluster0.qsra1.mongodb.net/Examples?retryWrites=true&w=majority";
+URI = "mongodb+srv://dbT:testing123@cosc4353db.wflq0.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(URI, {useNewUrlParser: true});
 
 const path = require("path");
@@ -48,8 +48,11 @@ app.get("/register", function (req, res) {
     res.sendFile(path.join(__dirname,'./Frontend/register.html'));
 });
   
+var userID
+
 // Handling user signup
 app.post("/register", function (req, res) {
+    userID = req.body.username
     var username = req.body.username
     var password = req.body.password
     User.register(new User({ username: username }),
@@ -84,8 +87,6 @@ app.post("/login", passport.authenticate("local", {
     failureRedirect: '/invalidlog'
 }), function (req, res) {
 });
-
-
 
 app.get('/fuelhistory' , function(req,res){
 res.sendFile(path.join(__dirname,'./Frontend/fuelhistory.html'))
@@ -135,12 +136,20 @@ app.get('/FQF',function (req, res){
     res.sendFile(path.join(__dirname,'./Frontend/FQF.html'));
 });
 
+var quoteData
+
 app.post("/FuelQuote", function (req, res){
     
-
+    quoteData = {    
+        gallonsRequested: req.body.input1,
+        deliveryAddress: req.body.DA,
+        deliveryDate:req.body.datechk,
+        pricePerGallon: req.body.SP,
+        totalAmt: req.body.TAD
+       
+    }
 
     var QuoteInfo = {
-
     gallonsRequested: req.body.input1,
     deliveryAddress: req.body.DA,
     deliveryDate:req.body.datechk,
@@ -166,11 +175,15 @@ app.get('/getAddress', async(req, res) => {
 app.get('/getProfile', async(req, res) => {
     const profile_data = profileInfo
     res.send(profile_data)
-    console.log(profile_data)
 })
 
-  
-  
+app.get('/getQuote', async(req,res) => {
+    const quote_data = quoteData
+    res.send(quote_data)
+    
+})
+
+
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log("Server Has Started at port 3000!");
